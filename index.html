@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>マルチ検索ツール</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        .search-box {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            align-items: center;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            padding: 0.5rem 1rem;
+            box-shadow: 0px 1px 6px rgba(32, 33, 36, 0.28);
+        }
+        .search-box input {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+        }
+        .search-box button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            outline: none;
+            font-size: 1rem;
+        }
+        .search-box button img {
+            height: 24px;
+            width: 24px;
+        }
+    </style>
+</head>
+<body>
+    <h1>マルチ検索ツール</h1>
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="検索キーワードを入力...">
+        <button onclick="search()">
+            <img src="https://www.gstatic.com/images/icons/material/system/1x/search_black_24dp.png" alt="Search">
+        </button>
+    </div>
+
+    <script>
+        document.getElementById('searchInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                search();
+            }
+        });
+
+        function search() {
+            const input = document.getElementById('searchInput').value.trim();
+            const keyword = encodeURIComponent(input.slice(2).trim());
+            const firstChar = input.charAt(0).toLowerCase();
+            let url = '';
+
+            switch (firstChar) {
+                case 'g':
+                    url = `https://www.google.com/search?q=${keyword}`;
+                    break;
+                case 'y':
+                    url = `https://www.youtube.com/results?search_query=${keyword}`;
+                    break;
+                case 'a':
+                    url = `https://www.amazon.co.jp/s?k=${keyword}`;
+                    break;
+                case 'd':
+                    url = `https://hosono.jp/wisdom-db/scripts/Q_duo.asp?word=${keyword}`;
+                    break;
+                case 'w':
+                    url = `https://ejje.weblio.jp/content/${keyword}`;
+                    break;
+                default:
+                    alert('最初の文字が無効です。使用可能な文字: g, y, a, d, w');
+                    return;
+            }
+            
+            document.getElementById('searchInput').value = ''; // 検索キーワードを消去
+            window.open(url, '_blank'); // 新しいタブで検索結果を開く
+        }
+    </script>
+</body>
+</html>
